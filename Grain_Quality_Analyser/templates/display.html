@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Estimation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+  body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+ #img{
+    width:0%;
+    background-color: #ccc;
+    margin: auto;
+    padding: 10px 20px;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  width: 25%;
+  height: 50%;
+}
+
+#content {
+  display:flex;
+  
+}
+
+#contentMenu{
+  padding: 0.5rem;
+  display: inline-block;
+  padding-top: 5%;
+  padding-right: 20%;
+}
+#menu1,#menu2,#menu3{
+  padding: 0.5rem;
+}
+#left{
+  padding-top: 5%;
+  padding-right: 5%;
+  margin-right: auto;
+  text-align: center;
+}
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: grey;
+   color: white;
+   text-align: center;
+}
+
+</style>
+    </head>
+    <body>
+      <header class="col-3">
+        <h2>Grain Quality Analyser</h2>
+      </header>
+      <hr>
+       <div id="content">
+          <div id="left">
+              <img class="center" src="{{url}}" alt="Grain" >
+              <br>
+              <p>Number of Good Grain: {{pure}}</p>
+              <p>Number of Not Good Grain: {{impure}}</p>
+              <br>
+              <form action="http://127.0.0.1:5000/logout" method="GET">
+              <div class="center">
+                <input type="submit" id="btn" class="btn btn-primary" value="LogOut!!">
+              </div>
+            </form>
+            </div>
+      <div id="contentMenu">
+         <div id="menu1">
+             <div>
+               <input id="mlp" name="mlp" type="submit" class="btn btn-primary" value="To Know Accuracy!!">
+             </div>
+             <div id="result1">
+              <table class="table table-striped">
+                <tr><td>MLP Test loss:</td>
+                 <td id="mlp1"></td>
+               </tr>
+               <tr><td>MLP Test Accuracy:</td>
+                 <td id="mlp2"></td>
+               </tr>
+              </table>
+             </div>
+         </div>
+         <div id="menu2">
+           <div>
+             <input name="cnn" id="cnn" type="submit" class="btn btn-primary" value="To Know CNN classify!!">
+           </div>
+           <div id="result2">
+            <table class="table table-striped">
+              <tr><td>CNN Test loss:</td>
+               <td id="cnn1"></td>
+             </tr>
+             <tr><td>CNN Test Accuracy:</td>
+               <td id="cnn2"></td>
+             </tr>
+            </table>
+           </div>
+         </div>
+         <div id="menu3">
+           <div>
+             <input name="nog" id="nog" type="submit" class="btn btn-primary" value="To Know Number of Grain!!">
+           </div>
+           <div id="result3">
+             <table class="table table-striped">
+               <tr><td>Number of One Grain Sample:</td>
+                <td id="nog1"></td>
+              </tr>
+              <tr><td>Number of More Grain Sample:</td>
+                <td id="nog2"></td>
+              </tr>
+              <tr><td>Number of Grain Sample:</td>
+                <td id="nog3"></td>
+              </tr>
+             </table>
+           </div>
+         </div>
+     </div>
+   </div>
+   
+   <div class="footer" >
+
+       <p>Thanks For Your Valuble Time!!</p>
+
+   </div>
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+       <script type="text/javascript">
+       $("#result2").css("display","none");
+       $("#result1").css("display","none");
+       $("#result3").css("display","none");
+       $("#mlp").click(function(){
+          $.getJSON("http://127.0.0.1:5000/mlp",function(res){
+            $("#result1").show();
+            $.each(res.result,function(i){
+              $("#mlp"+(i+1)).html(res.result[i]);
+            });
+       });
+      });
+       $("#cnn").click(function(){
+          $.getJSON("http://127.0.0.1:5000/cnn",function(res){
+            $("#result2").show();
+            $.each(res.result,function(i){
+              $("#cnn"+(i+1)).html(res.result[i]);
+            });
+          });
+        });
+       $("#nog").click(function(){
+         
+          $.getJSON("http://127.0.0.1:5000/nog",function(res){
+            $("#result3").show();
+            $.each(res.result,function(i){
+              $("#nog"+(i+1)).html(res.result[i]);
+            });
+           
+          });
+          });
+        </script>
+    </body>
+</html>
